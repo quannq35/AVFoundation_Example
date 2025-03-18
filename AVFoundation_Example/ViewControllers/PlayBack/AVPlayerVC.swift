@@ -8,8 +8,13 @@
 import UIKit
 import AVKit
 import AVFoundation
+import SnapKit
+
+
 class AVPlayerVC: UIViewController {
     
+    @IBOutlet weak var speedButton: UIImageView!
+    @IBOutlet weak var soundOffButton: UIImageView!
     @IBOutlet weak var seekSlider: UISlider!
     @IBOutlet weak var lbTotalTime: UILabel!
     @IBOutlet weak var lbCurrentTime: UILabel!
@@ -21,16 +26,17 @@ class AVPlayerVC: UIViewController {
     let videoURL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     private var player: AVPlayer? = nil
     private var playerLayer: AVPlayerLayer? = nil
+    var speedSelectionView: SpeedSelectionView?
     
     var isPlayer = false
+    var isSoundOff: Bool = false
     private var isThumbSeek : Bool = false
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAction()
         setupVideoPlayer()
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
     }
     
     override func viewDidLayoutSubviews() {
@@ -48,7 +54,15 @@ class AVPlayerVC: UIViewController {
         forwardButton.isUserInteractionEnabled = true
         forwardButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(forwardButtonPressed)))
         
+        soundOffButton.isUserInteractionEnabled = true
+        soundOffButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(soundOffButtonPress)))
+
+        speedButton.isUserInteractionEnabled = true
+        speedButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(speedButtonButtonPress)))
+
+        
         seekSlider.addTarget(self, action: #selector(onTapToSlider), for: .valueChanged)
+        
     }
     
     private func setupVideoPlayer() {
@@ -70,13 +84,12 @@ class AVPlayerVC: UIViewController {
         guard let currentTime = self.player?.currentTime() else { return }
         let seekTime10sec = CMTimeGetSeconds(currentTime).advanced(by: -10)
         let seekTime = CMTime(value: CMTimeValue(seekTime10sec), timescale: 1)
-        self.player?.seek(to: seekTime, completionHandler: { completed in
-        })
+        self.player?.seek(to: seekTime)
         
     }
     
     @objc private func pauseButtonPressed() {
-        isPlayer = !isPlayer
+        isPlayer.toggle()
         if isPlayer {
             self.player?.play()
             self.pauseButton.image = UIImage(systemName: "pause.circle")
@@ -91,8 +104,65 @@ class AVPlayerVC: UIViewController {
         guard let currentTime = self.player?.currentTime() else { return }
         let seekTime10sec = CMTimeGetSeconds(currentTime).advanced(by: 10)
         let seekTime = CMTime(value: CMTimeValue(seekTime10sec), timescale: 1)
-        self.player?.seek(to: seekTime, completionHandler: { completed in
-        })
+        self.player?.seek(to: seekTime)
+    }
+    
+    @objc private func playerDidFinishPlaying() {
+        print("Đã phát xong video")
+        player?.seek(to: .zero)
+        isPlayer = false
+        pauseButton.image = UIImage(systemName: "play.circle")
+    }
+    
+    @objc private func speedButtonButtonPress(_ gesture: UITapGestureRecognizer) {
+        let tapLocation = gesture.location(in: view)
+//        print(tapLocation)
+//        let buttonFrame = sender.convert(sender.bounds, to: self.view) // Lấy vị trí button trên màn hình
+
+        if let existinPopup = speedSelectionView {
+            existinPopup.removeFromSuperview()
+            self.speedSelectionView = nil
+            return
+        }
+        
+        let popupWidth: CGFloat = 100
+        let popupHeight: CGFloat = 120
+        let margin: CGFloat = 8
+        var popupY = tapLocation.y - popupHeight - margin - 16
+        
+        if popupY < self.view.safeAreaInsets.top {
+            popupY = tapLocation.y + margin
+        }
+        let speedView = SpeedSelectionView(frame: CGRect(x: tapLocation.x - popupWidth / 2, y: popupY, width: popupWidth, height: popupHeight))
+//        speedView.center = tapLocation
+        speedView.alpha = 0
+        speedView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        self.view.addSubview(speedView)
+        self.speedSelectionView = speedView
+        
+        self.speedSelectionView?.speedSelected = { [weak self] rate in
+            self?.player?.rate = rate
+            speedView.removeFromSuperview()
+            self?.speedSelectionView = nil
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: .curveEaseInOut) {
+            speedView.alpha = 1
+            speedView.transform = .identity
+        }
+        
+    }
+    
+    @objc private func soundOffButtonPress() {
+        isSoundOff.toggle()
+        if isSoundOff {
+            soundOffButton.image = UIImage(systemName: "speaker.slash")
+            player?.isMuted = true
+        } else {
+            soundOffButton.image = UIImage(systemName: "speaker.2")
+            player?.isMuted = false
+        }
     }
     
     private var timeObserver: Any? = nil
@@ -133,7 +203,7 @@ class AVPlayerVC: UIViewController {
               let minStr = timeFormater.string(from: NSNumber(value: mins)),
               let secStr = timeFormater.string(from: NSNumber(value: secs)) else { return }
         
-        self.lbCurrentTime.text = "\(hourStr):\(minStr):\(secStr)"
+        self.lbCurrentTime.text = "\(minStr):\(secStr)"
         
         // update lbTotalTime
         
@@ -148,7 +218,7 @@ class AVPlayerVC: UIViewController {
         guard let hourStrTotal = timeFormater.string(from: NSNumber(value: hoursRemaining)),
               let minStrTotal = timeFormater.string(from: NSNumber(value: minsRemaining)),
               let secStrTotal = timeFormater.string(from: NSNumber(value: secsRemaining)) else { return }
-        self.lbTotalTime.text = "\(hourStrTotal):\(minStrTotal):\(secStrTotal)"
+        self.lbTotalTime.text = "\(minStrTotal):\(secStrTotal)"
     }
     
     @objc private func onTapToSlider() {
@@ -161,5 +231,55 @@ class AVPlayerVC: UIViewController {
                 self.isThumbSeek = false
             }
         }
+    }
+}
+
+class SpeedSelectionView: UIView {
+    var speedSelected: ((Float) -> ())?
+    private let speeds: [Float] = [0.5, 1.0, 1.5, 2.0]
+    
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private func setupView() {
+        self.backgroundColor = .white
+        self.layer.cornerRadius = 8
+        self.clipsToBounds = true
+        self.addSubview(stackView)
+        
+        stackView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview().inset(10)
+        }
+        
+        for speed in speeds {
+            let button = UIButton()
+            button.setTitle("\(speed)x", for: .normal)
+            button.setTitleColor(.black, for: .normal)
+            button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+            button.backgroundColor = .clear
+            button.addTarget(self, action: #selector(speedTapped), for: .touchUpInside)
+            stackView.addArrangedSubview(button)
+        }
+    }
+    
+    @objc private func speedTapped(_ sender: UIButton) {
+           guard let title = sender.currentTitle, let speed = Float(title.dropLast()) else { return }
+           speedSelected?(speed)
+       }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

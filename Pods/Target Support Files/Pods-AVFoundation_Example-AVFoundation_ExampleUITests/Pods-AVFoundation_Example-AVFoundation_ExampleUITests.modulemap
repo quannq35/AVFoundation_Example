@@ -1,0 +1,6 @@
+framework module Pods_AVFoundation_Example_AVFoundation_ExampleUITests {
+  umbrella header "Pods-AVFoundation_Example-AVFoundation_ExampleUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

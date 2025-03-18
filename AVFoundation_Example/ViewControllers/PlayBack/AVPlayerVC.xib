@@ -17,6 +17,8 @@
                 <outlet property="lbTotalTime" destination="gao-hs-aoA" id="Gpc-mC-GIX"/>
                 <outlet property="pauseButton" destination="y9R-OH-UA0" id="Edp-G4-9F0"/>
                 <outlet property="seekSlider" destination="Aaz-iN-89I" id="Dir-dh-Aun"/>
+                <outlet property="soundOffButton" destination="Z8u-7s-MWR" id="tH2-do-pzr"/>
+                <outlet property="speedButton" destination="XvW-GY-tHm" id="hXd-jE-SR4"/>
                 <outlet property="videoView" destination="Kiy-TQ-HXn" id="Q3h-fZ-SAS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -27,7 +29,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRF-7U-fI8">
-                    <rect key="frame" x="0.0" y="75" width="393" height="250"/>
+                    <rect key="frame" x="0.0" y="59" width="393" height="250"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kiy-TQ-HXn">
                             <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
@@ -39,6 +41,13 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="swb-CR-iXq">
                             <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
                             <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.2" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Z8u-7s-MWR">
+                                    <rect key="frame" x="10" y="11.999999999999998" width="24" height="20.333333333333329"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="24" id="bLh-qJ-hq7"/>
+                                        <constraint firstAttribute="height" constant="24" id="r2c-Db-kbG"/>
+                                    </constraints>
+                                </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="zwQ-TM-LpJ">
                                     <rect key="frame" x="131.66666666666666" y="110" width="129.99999999999997" height="30"/>
                                     <subviews>
@@ -66,27 +75,27 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HAe-zQ-HhP">
                                     <rect key="frame" x="16" y="202" width="361" height="32"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6cW-AH-0ri">
-                                            <rect key="frame" x="0.0" y="0.0" width="60" height="32"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="60" id="kAP-Ze-nL4"/>
-                                            </constraints>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6cW-AH-0ri">
+                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="32"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                             <color key="textColor" systemColor="systemBackgroundColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aaz-iN-89I">
-                                            <rect key="frame" x="66" y="0.0" width="189" height="33"/>
+                                            <rect key="frame" x="6" y="0.0" width="269" height="33"/>
                                         </slider>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gao-hs-aoA">
-                                            <rect key="frame" x="261" y="0.0" width="60" height="32"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="60" id="rjF-C0-JIL"/>
-                                            </constraints>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gao-hs-aoA">
+                                            <rect key="frame" x="281" y="0.0" width="0.0" height="32"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                             <color key="textColor" systemColor="systemBackgroundColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speedometer" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XvW-GY-tHm">
+                                            <rect key="frame" x="289" y="0.66666666666666607" width="32" height="30.666666666666671"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="32" id="vfY-R1-zRl"/>
+                                            </constraints>
+                                        </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.up.left.and.arrow.down.right.rectangle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="kJv-Qb-eKd">
                                             <rect key="frame" x="329" y="1.6666666666666625" width="32" height="29.000000000000007"/>
                                             <constraints>
@@ -102,6 +111,8 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="Z8u-7s-MWR" firstAttribute="leading" secondItem="swb-CR-iXq" secondAttribute="leading" constant="10" id="9Oi-Zm-N0W"/>
+                                <constraint firstItem="Z8u-7s-MWR" firstAttribute="top" secondItem="swb-CR-iXq" secondAttribute="top" constant="10" id="LDD-ZA-ppk"/>
                                 <constraint firstItem="zwQ-TM-LpJ" firstAttribute="centerY" secondItem="swb-CR-iXq" secondAttribute="centerY" id="TMA-xT-Jw4"/>
                                 <constraint firstItem="zwQ-TM-LpJ" firstAttribute="centerX" secondItem="swb-CR-iXq" secondAttribute="centerX" id="WjS-zF-rHf"/>
                                 <constraint firstAttribute="bottom" secondItem="HAe-zQ-HhP" secondAttribute="bottom" constant="16" id="nOb-lk-7pt"/>
@@ -129,7 +140,7 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pRF-7U-fI8" secondAttribute="trailing" id="27P-iT-huo"/>
-                <constraint firstItem="pRF-7U-fI8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="44G-Ic-tIF"/>
+                <constraint firstItem="pRF-7U-fI8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="44G-Ic-tIF"/>
                 <constraint firstItem="pRF-7U-fI8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="XoX-Tr-n4b"/>
                 <constraint firstItem="pRF-7U-fI8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="j6n-eb-DxM"/>
                 <constraint firstItem="pRF-7U-fI8" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="qOT-UA-iXi"/>
@@ -142,6 +153,8 @@
         <image name="gobackward.10" catalog="system" width="119" height="128"/>
         <image name="goforward.10" catalog="system" width="119" height="128"/>
         <image name="play.circle" catalog="system" width="128" height="123"/>
+        <image name="speaker.2" catalog="system" width="128" height="88"/>
+        <image name="speedometer" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
