@@ -60,7 +60,6 @@ class AVPlayerVC: UIViewController {
         speedButton.isUserInteractionEnabled = true
         speedButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(speedButtonButtonPress)))
 
-        
         seekSlider.addTarget(self, action: #selector(onTapToSlider), for: .valueChanged)
         
     }
@@ -85,7 +84,6 @@ class AVPlayerVC: UIViewController {
         let seekTime10sec = CMTimeGetSeconds(currentTime).advanced(by: -10)
         let seekTime = CMTime(value: CMTimeValue(seekTime10sec), timescale: 1)
         self.player?.seek(to: seekTime)
-        
     }
     
     @objc private func pauseButtonPressed() {
@@ -108,7 +106,6 @@ class AVPlayerVC: UIViewController {
     }
     
     @objc private func playerDidFinishPlaying() {
-        print("Đã phát xong video")
         player?.seek(to: .zero)
         isPlayer = false
         pauseButton.image = UIImage(systemName: "play.circle")
@@ -116,9 +113,15 @@ class AVPlayerVC: UIViewController {
     
     @objc private func speedButtonButtonPress(_ gesture: UITapGestureRecognizer) {
         let tapLocation = gesture.location(in: view)
-//        print(tapLocation)
-//        let buttonFrame = sender.convert(sender.bounds, to: self.view) // Lấy vị trí button trên màn hình
 
+        UIView.animate(withDuration: 0.1, animations: {
+            self.speedButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+
+        }) { finished in
+            if finished {
+                self.speedButton.transform = .identity
+            }
+        }
         if let existinPopup = speedSelectionView {
             existinPopup.removeFromSuperview()
             self.speedSelectionView = nil
@@ -134,7 +137,6 @@ class AVPlayerVC: UIViewController {
             popupY = tapLocation.y + margin
         }
         let speedView = SpeedSelectionView(frame: CGRect(x: tapLocation.x - popupWidth / 2, y: popupY, width: popupWidth, height: popupHeight))
-//        speedView.center = tapLocation
         speedView.alpha = 0
         speedView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         
@@ -143,15 +145,20 @@ class AVPlayerVC: UIViewController {
         
         self.speedSelectionView?.speedSelected = { [weak self] rate in
             self?.player?.rate = rate
-            speedView.removeFromSuperview()
-            self?.speedSelectionView = nil
+            UIView.animate(withDuration: 0.5, animations: {
+                self?.speedSelectionView?.alpha = 0
+            }) { finished in
+                if finished {
+                    speedView.removeFromSuperview()
+                    self?.speedSelectionView = nil
+                }
+            }
         }
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: .curveEaseInOut) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: .curveEaseOut) {
             speedView.alpha = 1
             speedView.transform = .identity
         }
-        
     }
     
     @objc private func soundOffButtonPress() {
@@ -184,11 +191,8 @@ class AVPlayerVC: UIViewController {
         if !self.isThumbSeek {
             self.seekSlider.value = Float(currentTimeInSecond / durationTimeInSecond)
         }
-        
-        // update lbCurrentTime
-        
+                
         let value = Float64(self.seekSlider.value) * CMTimeGetSeconds(duration) // Lấy giá trị hiện tại đã chạy được
-        
         let hours = value / 3600 // Tính số giờ
         
         // truncationgRemaider: Hiểu đơn giản phép chia lấy phần dư.. vế đầu là số bị chia  , dividingBy là số chia
@@ -202,11 +206,8 @@ class AVPlayerVC: UIViewController {
         guard let hourStr = timeFormater.string(from: NSNumber(value: hours)),
               let minStr = timeFormater.string(from: NSNumber(value: mins)),
               let secStr = timeFormater.string(from: NSNumber(value: secs)) else { return }
-        
         self.lbCurrentTime.text = "\(minStr):\(secStr)"
-        
-        // update lbTotalTime
-        
+                
         let hoursRemaining = (durationTimeInSecond / 3600) - hours
         let minsRemaining = (durationTimeInSecond / 60).truncatingRemainder(dividingBy: 60) - mins
         let secsRemaining = durationTimeInSecond.truncatingRemainder(dividingBy: 60) - secs
@@ -281,5 +282,9 @@ class SpeedSelectionView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
