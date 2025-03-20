@@ -11,7 +11,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AVPlayerVC" customModule="AVFoundation_Example" customModuleProvider="target">
             <connections>
                 <outlet property="backwardButton" destination="dGP-0Q-L9u" id="5S3-Vf-71R"/>
-                <outlet property="containerVideoView" destination="pRF-7U-fI8" id="nie-tG-vyt"/>
                 <outlet property="forwardButton" destination="vp0-Su-IkP" id="258-lF-bEP"/>
                 <outlet property="lbCurrentTime" destination="6cW-AH-0ri" id="bVd-t2-Fq2"/>
                 <outlet property="lbTotalTime" destination="gao-hs-aoA" id="Gpc-mC-GIX"/>
@@ -28,16 +27,9 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRF-7U-fI8">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kiy-TQ-HXn">
                     <rect key="frame" x="0.0" y="59" width="393" height="250"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kiy-TQ-HXn">
-                            <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="250" id="CBu-mO-z0o"/>
-                            </constraints>
-                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="swb-CR-iXq">
                             <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
                             <subviews>
@@ -122,28 +114,22 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="swb-CR-iXq" secondAttribute="bottom" id="BRR-PC-4BE"/>
-                        <constraint firstItem="Kiy-TQ-HXn" firstAttribute="leading" secondItem="pRF-7U-fI8" secondAttribute="leading" id="G3f-G4-GCd"/>
-                        <constraint firstAttribute="trailing" secondItem="Kiy-TQ-HXn" secondAttribute="trailing" id="TRG-nw-UOn"/>
-                        <constraint firstItem="Kiy-TQ-HXn" firstAttribute="top" secondItem="pRF-7U-fI8" secondAttribute="top" id="Ylf-oG-X9N"/>
-                        <constraint firstAttribute="trailing" secondItem="swb-CR-iXq" secondAttribute="trailing" id="Z9b-Hh-b20"/>
-                        <constraint firstAttribute="bottom" secondItem="Kiy-TQ-HXn" secondAttribute="bottom" id="bnb-3I-SgY"/>
-                        <constraint firstItem="swb-CR-iXq" firstAttribute="top" secondItem="pRF-7U-fI8" secondAttribute="top" id="f3n-Hl-kxv"/>
-                        <constraint firstAttribute="height" constant="250" id="nGX-Y4-q7O"/>
-                        <constraint firstItem="swb-CR-iXq" firstAttribute="leading" secondItem="pRF-7U-fI8" secondAttribute="leading" id="pgx-bT-6cB"/>
+                        <constraint firstAttribute="height" constant="250" id="CBu-mO-z0o"/>
+                        <constraint firstAttribute="trailing" secondItem="swb-CR-iXq" secondAttribute="trailing" id="a1M-Wm-Avx"/>
+                        <constraint firstItem="swb-CR-iXq" firstAttribute="top" secondItem="Kiy-TQ-HXn" secondAttribute="top" id="jV9-PZ-aHm"/>
+                        <constraint firstItem="swb-CR-iXq" firstAttribute="leading" secondItem="Kiy-TQ-HXn" secondAttribute="leading" id="kAh-di-sr1"/>
+                        <constraint firstAttribute="bottom" secondItem="swb-CR-iXq" secondAttribute="bottom" id="o1d-qo-0F1"/>
                     </constraints>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pRF-7U-fI8" secondAttribute="trailing" id="27P-iT-huo"/>
-                <constraint firstItem="pRF-7U-fI8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="44G-Ic-tIF"/>
-                <constraint firstItem="pRF-7U-fI8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="XoX-Tr-n4b"/>
-                <constraint firstItem="pRF-7U-fI8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="j6n-eb-DxM"/>
-                <constraint firstItem="pRF-7U-fI8" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="qOT-UA-iXi"/>
+                <constraint firstItem="Kiy-TQ-HXn" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Zk6-Re-1Yj"/>
+                <constraint firstItem="Kiy-TQ-HXn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="jDx-uD-TEh"/>
+                <constraint firstItem="Kiy-TQ-HXn" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="pbT-6P-8ns"/>
             </constraints>
             <point key="canvasLocation" x="-202.29007633587784" y="-13.380281690140846"/>
         </view>
