@@ -194,7 +194,7 @@ class AVPlayerVC: UIViewController {
 //            print(percent)
             self.trimButton.setTitle("Trim Video... \(Int(percent * 100))%", for: .normal)
             if percent == 1 {
-//                self.saveVideoToPhotos(url)
+                self.saveVideoToPhotos(url)
             }
         })
 
@@ -293,7 +293,7 @@ class AVPlayerVC: UIViewController {
         
         // Load Video trach
         let videoTrack = asset.tracks(withMediaType: .video)
-        guard let assetTrack = videoTrack.first, let compositionTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else { return }
+        guard let assetTrack = videoTrack.first, let compositionTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid), let compositionAudioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else { return }
         
         let startTime = CMTime(seconds: 5, preferredTimescale: 600)
         let endTime = CMTime(seconds: 50, preferredTimescale: 600)
