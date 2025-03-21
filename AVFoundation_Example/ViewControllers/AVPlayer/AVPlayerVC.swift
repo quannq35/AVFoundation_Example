@@ -291,14 +291,25 @@ class AVPlayerVC: UIViewController {
         let asset = AVURLAsset(url: videoURL)
         let composition = AVMutableComposition()
         
-        // Load Video trach
-        let videoTrack = asset.tracks(withMediaType: .video)
-        guard let assetTrack = videoTrack.first, let compositionTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid), let compositionAudioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else { return }
-        
+        // Load Video track
         let startTime = CMTime(seconds: 5, preferredTimescale: 600)
         let endTime = CMTime(seconds: 50, preferredTimescale: 600)
         let timeRange = CMTimeRange(start: startTime, end: endTime)
-        try? compositionTrack.insertTimeRange(timeRange, of: assetTrack, at: .zero)
+        
+        guard let videoTrack = asset.tracks(withMediaType: .video).first,
+              let compositionVideoTrack = composition.addMutableTrack(
+                withMediaType: .video,
+                preferredTrackID: kCMPersistentTrackID_Invalid)else { return }
+        
+       
+        try? compositionVideoTrack.insertTimeRange(timeRange, of: videoTrack, at: .zero)
+        
+        guard let audioTrack = asset.tracks(withMediaType: .audio).first,
+              let compositionAudioTrack = composition.addMutableTrack(
+                withMediaType: .audio,
+                preferredTrackID: kCMPersistentTrackID_Invalid) else { return }
+        
+        try? compositionAudioTrack.insertTimeRange(timeRange, of: audioTrack, at: .zero)
         
         let documentPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let outputURL = documentPath.appendingPathComponent("trimmed_video.mp4")
@@ -313,19 +324,6 @@ class AVPlayerVC: UIViewController {
         exportSession.outputFileType = .mp4
         exportSession.shouldOptimizeForNetworkUse = true
         
-        
-        let progressTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
-            print("Progress: \(exportSession.progress * 100)%")
-            
-            // Cập nhật UI, ví dụ: progress bar
-            percent(exportSession.progress, outputURL)
-
-            if exportSession.status == .completed || exportSession.status == .failed {
-                timer.invalidate() // Dừng timer nếu export xong hoặc thất bại
-            }
-        }
-        
-        
         exportSession.exportAsynchronously {
             switch exportSession.status {
             case .unknown:
@@ -337,11 +335,23 @@ class AVPlayerVC: UIViewController {
             case .completed:
                 print(outputURL)
             case .failed:
+                print(exportSession.error?.localizedDescription ?? "")
                 break
             case .cancelled:
                 break
             }
         }
+        
+        let progressTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+            print("Progress: \(exportSession.progress * 100)%")
+            
+            // Cập nhật UI, ví dụ: progress bar
+            percent(exportSession.progress, outputURL)
+
+            if exportSession.status == .completed || exportSession.status == .failed {
+                timer.invalidate() // Dừng timer nếu export xong hoặc thất bại
+            }
+        } 
     }
     
     private func saveVideoToPhotos(_ videoURL: URL) {

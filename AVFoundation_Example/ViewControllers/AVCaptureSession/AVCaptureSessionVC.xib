@@ -10,6 +10,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AVCaptureSessionVC" customModule="AVFoundation_Example" customModuleProvider="target">
             <connections>
+                <outlet property="captureButton" destination="Hkx-ut-BgO" id="D8y-Px-jbG"/>
+                <outlet property="recordButton" destination="JtC-Pe-sTK" id="xuM-sM-erd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -17,8 +19,40 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JtC-Pe-sTK">
+                    <rect key="frame" x="80" y="718" width="90" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="90" id="6uE-Se-MXQ"/>
+                        <constraint firstAttribute="height" constant="50" id="74Z-6X-xFe"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="filled" title="Record"/>
+                    <connections>
+                        <action selector="recordButtonTapWith_sender:" destination="-1" eventType="touchUpInside" id="lsB-ap-LJH"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hkx-ut-BgO">
+                    <rect key="frame" x="233" y="718" width="80" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="EXd-cj-EXY"/>
+                        <constraint firstAttribute="height" constant="50" id="Swp-VM-fXp"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="filled" title="Cap"/>
+                    <connections>
+                        <action selector="captureButtonTapped:" destination="-1" eventType="touchUpInside" id="aId-xF-Jgd"/>
+                    </connections>
+                </button>
+            </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="JtC-Pe-sTK" secondAttribute="bottom" constant="50" id="CQs-EV-rsr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Hkx-ut-BgO" secondAttribute="trailing" constant="80" id="Ocd-hz-5EF"/>
+                <constraint firstItem="JtC-Pe-sTK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="80" id="lnZ-MD-zgn"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Hkx-ut-BgO" secondAttribute="bottom" constant="50" id="mdH-Mk-gNZ"/>
+            </constraints>
             <point key="canvasLocation" x="60" y="-11"/>
         </view>
     </objects>
